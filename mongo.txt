@@ -1,0 +1,111 @@
+Mongo DB Exercise
+1.Create Operation.
+test> use library
+switched to db library
+library> db.books.insertMany([{title:"Introduction to computer"},{author:"Amit Garg"},{Publish_year:2021}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66dd3013d0db246e9e2710bc'),
+    '1': ObjectId('66dd3013d0db246e9e2710bd'),
+    '2': ObjectId('66dd3013d0db246e9e2710be')
+  }
+}
+library> db.books.insertMany([{title:"the Catcher in the Rye"},{author:"ABC"},{Publish_year:2020}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66dd31e9d0db246e9e2710bf'),
+    '1': ObjectId('66dd31e9d0db246e9e2710c0'),
+    '2': ObjectId('66dd31e9d0db246e9e2710c1')
+  }
+}
+2.Read Operation.
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66dd3013d0db246e9e2710bc'),
+    title: 'Introduction to computer'
+  },
+  { _id: ObjectId('66dd3013d0db246e9e2710bd'), author: 'Amit Garg' },
+  { _id: ObjectId('66dd3013d0db246e9e2710be'), Publish_year: 2021 },
+  {
+    _id: ObjectId('66dd31e9d0db246e9e2710bf'),
+    title: 'the Catcher in the Rye'
+  },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c0'), author: 'ABC' },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c1'), Publish_year: 2020 }
+]
+3.Update Operation.
+library> db.books.update({title:"the Catcher in the Rye"},{$set:{Publish_year:2024,genre:"Mystery"}})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+library> db.books.find()
+[
+  {
+    _id: ObjectId('66dd3013d0db246e9e2710bc'),
+    title: 'Introduction to computer'
+  },
+  { _id: ObjectId('66dd3013d0db246e9e2710bd'), author: 'Amit Garg' },
+  { _id: ObjectId('66dd3013d0db246e9e2710be'), Publish_year: 2021 },
+  {
+    _id: ObjectId('66dd31e9d0db246e9e2710bf'),
+    title: 'the Catcher in the Rye',
+    Publish_year: 2024,
+    genre: 'Mystery'
+  },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c0'), author: 'ABC' },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c1'), Publish_year: 2020 }
+]
+4.Delete Operations
+library> db.books.remove({title:"Introduction to computer"})
+DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 1 }
+library> db.books.find()
+[
+  { _id: ObjectId('66dd3013d0db246e9e2710bd'), author: 'Amit Garg' },
+  { _id: ObjectId('66dd3013d0db246e9e2710be'), Publish_year: 2021 },
+  {
+    _id: ObjectId('66dd31e9d0db246e9e2710bf'),
+    title: 'the Catcher in the Rye',
+    Publish_year: 2024,
+    genre: 'Mystery'
+  },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c0'), author: 'ABC' },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c1'), Publish_year: 2020 }
+]
+library> db.books.remove({Publish_year:{$lt:2021}})
+{ acknowledged: true, deletedCount: 0 }
+library> db.books.find()
+[
+  { _id: ObjectId('66dd3013d0db246e9e2710bd'), author: 'Amit Garg' },
+  { _id: ObjectId('66dd3013d0db246e9e2710be'), Publish_year: 2021 },
+  {
+    _id: ObjectId('66dd31e9d0db246e9e2710bf'),
+    title: 'the Catcher in the Rye',
+    Publish_year: 2024,
+    genre: 'Mystery'
+  },
+  { _id: ObjectId('66dd31e9d0db246e9e2710c0'), author: 'ABC' }
+{ _id: ObjectId('66dd31e9d0db246e9e2710c1'), Publish_year: 2020 }
+]
+5.Advanced Query
+Find and display the top recently published books the"books" collection.
+library> db.books.find().sort({Publish_year:-1}).limit(2)
+[
+  {
+    _id: ObjectId('66dd31e9d0db246e9e2710bf'),
+    title: 'the Catcher in the Rye',
+    Publish_year: 2024,
+    genre: 'Mystery'
+  },
+  { _id: ObjectId('66dd3013d0db246e9e2710be'), Publish_year: 2021 }
+]
+
+
